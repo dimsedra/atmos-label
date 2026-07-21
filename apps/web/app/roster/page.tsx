@@ -44,19 +44,24 @@ export default function RosterPage() {
         prixCount={prixMembers.length}
       />
 
-      {/* Conditionally Render Group Patterns */}
+      {/* Scalable Grid Group Patterns Section */}
       {(activeTab === 'all' || activeTab === 'valley' || activeTab === 'prix') && (
-        <section className="py-16">
-          <div className="mb-12 border-b border-black/30 pb-4">
-            <span className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#ff3b26]">
-              GROUP RESONANCE PATTERNS
+        <section className="py-12">
+          <div className="mb-8 flex items-end justify-between border-b border-black/30 pb-4">
+            <div>
+              <span className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#ff3b26]">
+                GROUP PATTERNS
+              </span>
+              <h2 className="text-[clamp(2.2rem,4.5vw,4.5rem)] font-semibold leading-none tracking-[-.065em] uppercase">
+                THE MEETING POINTS
+              </h2>
+            </div>
+            <span className="text-[10px] font-semibold uppercase tracking-[.18em] text-black/45">
+              {GROUPS.length} ACTIVE GROUPS
             </span>
-            <h2 className="text-[clamp(2.5rem,5vw,5rem)] font-semibold leading-none tracking-[-.065em] uppercase">
-              THE MEETING POINTS
-            </h2>
           </div>
 
-          <div className="grid gap-16">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {GROUPS.filter(
               (g) => activeTab === 'all' || activeTab === g.id
             ).map((group, idx) => (
@@ -68,13 +73,13 @@ export default function RosterPage() {
 
       {/* Conditionally Render Member Grid */}
       {activeTab !== 'discography' && (
-        <section className="py-16">
-          <div className="mb-12 flex items-end justify-between border-b border-black/30 pb-4">
+        <section className="py-12">
+          <div className="mb-8 flex items-end justify-between border-b border-black/30 pb-4">
             <div>
               <span className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#ff3b26]">
                 INDIVIDUAL ARCHETYPES
               </span>
-              <h2 className="text-[clamp(2.5rem,5vw,5rem)] font-semibold leading-none tracking-[-.065em] uppercase">
+              <h2 className="text-[clamp(2.2rem,4.5vw,4.5rem)] font-semibold leading-none tracking-[-.065em] uppercase">
                 MEMBER PROFILES ({filteredMembers.length})
               </h2>
             </div>

@@ -13,60 +13,46 @@ interface GroupProfileCardProps {
 export function GroupProfileCard({ group, index }: GroupProfileCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      className="group relative flex flex-col justify-between border-t border-black/30 pt-8 pb-12 lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:gap-12"
+      transition={{ delay: index * 0.08 }}
+      className="group relative flex flex-col justify-between border-t border-black/25 pt-6 pb-6"
     >
-      <div className="flex flex-col justify-between">
-        <div>
-          <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[.2em] text-black/50">
-            <span>PATTERN 0{index + 1}</span>
-            <span className="flex items-center gap-1.5 text-black/70">
-              <Users size={12} /> {group.memberCount} MEMBERS
-            </span>
-          </div>
-
-          <h2 className="mt-4 text-[clamp(3rem,6vw,6rem)] font-semibold leading-[.85] tracking-[-.065em]">
-            {group.name}
-          </h2>
-
-          <p className="mt-4 text-base font-medium text-[#ff3b26] md:text-lg">
-            {group.tagline}
-          </p>
-
-          <div className="mt-8 grid gap-6 border-t border-black/15 pt-6 text-sm text-black/75">
-            <div>
-              <span className="text-[10px] font-semibold uppercase tracking-[.18em] text-black/45">
-                The Music & Sound
-              </span>
-              <p className="mt-1 leading-relaxed">{group.soundProfile}</p>
-            </div>
-            <div>
-              <span className="text-[10px] font-semibold uppercase tracking-[.18em] text-black/45">
-                Stage Dynamic
-              </span>
-              <p className="mt-1 leading-relaxed">{group.stageVibe}</p>
-            </div>
-          </div>
+      <Link href={`/roster/${group.slug}`} className="block">
+        {/* Cover Image */}
+        <div className="relative aspect-[16/10] overflow-hidden bg-black/10">
+          <img
+            src={group.heroImage}
+            alt={group.name}
+            className="h-full w-full object-cover grayscale transition duration-500 group-hover:scale-105 group-hover:grayscale-0"
+          />
+          <span className="absolute top-3 right-3 bg-black/80 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.18em] text-white">
+            {group.memberCount} MEMBERS
+          </span>
         </div>
 
-        <Link
-          href={`/roster/${group.slug}`}
-          className="arrow-link mt-10"
-        >
-          Explore {group.name} Pattern <ArrowRight size={18} />
-        </Link>
-      </div>
+        {/* Minimal Group Header */}
+        <div className="mt-4 flex items-center justify-between border-t border-black/15 pt-3">
+          <div>
+            <span className="text-[9px] font-semibold uppercase tracking-[.2em] text-[#ff3b26]">
+              PATTERN 0{index + 1}
+            </span>
+            <h3 className="text-3xl font-semibold tracking-[-.05em] md:text-4xl">
+              {group.name}
+            </h3>
+          </div>
+          <ArrowRight
+            className="-rotate-45 transition duration-300 group-hover:rotate-0 group-hover:text-[#ff3b26]"
+            size={20}
+          />
+        </div>
 
-      <div className="mt-8 aspect-[16/11] overflow-hidden bg-black/10 lg:mt-0">
-        <img
-          src={group.heroImage}
-          alt={`${group.name} group portrait`}
-          className="h-full w-full object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
-        />
-      </div>
+        {/* Short Tagline Only */}
+        <p className="mt-2 text-xs font-medium text-black/70 line-clamp-2">
+          {group.tagline}
+        </p>
+      </Link>
     </motion.div>
   );
 }
