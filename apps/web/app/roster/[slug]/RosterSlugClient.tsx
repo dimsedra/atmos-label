@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Pause, Play, Sparkles } from 'lucide-react';
-import type { GroupProfile, MemberProfile } from '../../../data/roster';
+import type { DiscographyRelease, GroupProfile, MemberProfile } from '../../../data/roster';
+import { DiscographyStream } from '../../../components/roster/DiscographyStream';
 
 interface RosterSlugClientProps {
   member?: MemberProfile;
   group?: GroupProfile;
   memberGroup?: GroupProfile;
   groupMembers?: MemberProfile[];
+  releases?: DiscographyRelease[];
 }
 
 export function RosterSlugClient({
@@ -17,6 +19,7 @@ export function RosterSlugClient({
   group,
   memberGroup,
   groupMembers,
+  releases = [],
 }: RosterSlugClientProps) {
   const [playingTrack, setPlayingTrack] = useState<string | null>(null);
 
@@ -181,6 +184,13 @@ export function RosterSlugClient({
             </section>
           )}
 
+          {/* Discography Stream for Member */}
+          {releases.length > 0 && (
+            <section className="mt-24">
+              <DiscographyStream releases={releases} />
+            </section>
+          )}
+
           {/* Group Resonance Link */}
           {memberGroup && (
             <div className="mt-20 border-t border-black/20 pt-8">
@@ -271,6 +281,13 @@ export function RosterSlugClient({
                   </Link>
                 ))}
               </div>
+            </section>
+          )}
+
+          {/* Discography Stream for Collective */}
+          {releases.length > 0 && (
+            <section className="mt-24 border-t border-white/20 pt-12">
+              <DiscographyStream releases={releases} />
             </section>
           )}
         </article>
