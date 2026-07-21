@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowDown, ArrowRight, Menu, Pause, Play, ShoppingBag, X } from 'lucide-react';
 
@@ -61,7 +62,7 @@ export default function HomePage() {
         <Mark />
         <nav className="hidden items-center gap-9 text-[11px] font-semibold uppercase tracking-[.18em] md:flex" aria-label="Main navigation">
           <a href="#releases">Music</a>
-          <a href="#artists">Artists</a>
+          <Link href="/roster">Artists</Link>
           <a href="#shop">Objects</a>
           <a href="#journal">Journal</a>
         </nav>

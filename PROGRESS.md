@@ -8,11 +8,11 @@ Living document for tracking local development progress across all 7 phases of t
 
 - **Current Phase**: Phase 2 — Frontend UI Ecosystem & Interactive Mock Data
 - **TDD Test Suite Status**:
-  - Unit / Integration (Vitest): `2 tests passing`
-  - End-to-End (Playwright): `1 test passing`
+  - Unit / Integration (Vitest): `6 tests passing`
+  - End-to-End (Playwright): `2 tests passing`
 - **Active Branch**: `feat/phase-2-frontend-ui`
 - **GitHub Repository**: [dimsedra/atmos-label](https://github.com/dimsedra/atmos-label.git)
-- **Active Issue**: [Issue #6 (Task 2.1)](https://github.com/dimsedra/atmos-label/issues/6)
+- **Active Issue**: [Issue #7 (Task 2.2)](https://github.com/dimsedra/atmos-label/issues/7)
 - **Specification Document**: [SPEC.md](file:///d:/Project%20Hub/k-label/SPEC.md)
 
 ---
@@ -30,11 +30,12 @@ Living document for tracking local development progress across all 7 phases of t
 - [x] Setup Zod validation utilities & environment schema in `@atmos/validators`
 
 ### 🟩 Phase 2: Frontend UI Ecosystem & Interactive Mock Data (UI-First)
-- [ ] **Task 2.1**: Build Roster Page (`/roster` & `/roster/[slug]`) — Group resonance (VALLEY, PRIX, FLAVOR, SOUVEREIN) & member profiles *(Active: [Issue #6](https://github.com/dimsedra/atmos-label/issues/6))*
+- [x] **Task 2.1**: Build Roster Page (`/roster` & `/roster/[slug]`) — Group resonance (VALLEY 5, PRIX 4) & member profiles *(Closed [Issue #6](https://github.com/dimsedra/atmos-label/issues/6))*
 - [ ] **Task 2.2**: Build Shop Page (`/shop` & `/shop/[id]`) — Standalone merch storefront, cart drawer, & checkout form simulation *(Active: [Issue #7](https://github.com/dimsedra/atmos-label/issues/7))*
 - [ ] **Task 2.3**: Build Articles & News Page (`/news` & `/news/[slug]`) — Editorial reading experience & field notes *(Active: [Issue #8](https://github.com/dimsedra/atmos-label/issues/8))*
 - [ ] **Task 2.4**: Build About Us Page (`/about`) — ATMOS MOAT vision, manifesto, and 3-phase lifecycle narrative *(Active: [Issue #9](https://github.com/dimsedra/atmos-label/issues/9))*
 - [ ] **Task 2.5**: Build Internal Admin Logistics Portal (`/admin/logistics`) — Order queue, status transitions, & resi input form simulation *(Active: [Issue #10](https://github.com/dimsedra/atmos-label/issues/10))*
+
 
 ### ⬜ Phase 3: Core Data & Database Layer (Drizzle ORM + PostgreSQL based on Real UI)
 - [ ] Define Drizzle ORM schemas (`schema.ts`: Users, Products/SKUs, Orders, Items, Payments)
