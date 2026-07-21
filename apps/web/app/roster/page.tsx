@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { GROUPS, MEMBERS } from '../../data/roster';
 import { RosterHeader } from '../../components/roster/RosterHeader';
 import { GroupProfileCard } from '../../components/roster/GroupProfileCard';
-import { MemberProfileCard } from '../../components/roster/MemberProfileCard';
+import { BentoMemberCard } from '../../components/roster/BentoMemberCard';
 
 export default function RosterPage() {
   return (
@@ -45,7 +45,7 @@ export default function RosterPage() {
         </div>
       </section>
 
-      {/* SECTION 02: INDIVIDUALS */}
+      {/* SECTION 02: INDIVIDUALS (MOVING BENTO-BOX GRID) */}
       <section className="py-16">
         <div className="mb-10 flex items-end justify-between border-b border-black/30 pb-4">
           <div>
@@ -56,11 +56,15 @@ export default function RosterPage() {
               INDIVIDUALS ({MEMBERS.length})
             </h2>
           </div>
+          <span className="text-[10px] font-semibold uppercase tracking-[.18em] text-black/45">
+            BENTO GRID // INTERACTIVE
+          </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {/* Dynamic Bento Box Grid */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
           {MEMBERS.map((member, idx) => (
-            <MemberProfileCard key={member.id} member={member} index={idx} />
+            <BentoMemberCard key={member.id} member={member} index={idx} />
           ))}
         </div>
       </section>
