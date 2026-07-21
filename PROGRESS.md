@@ -19,7 +19,7 @@ Living document for tracking local development progress across all 7 phases of t
 
 ### 🟩 Phase 1: Foundation & Local Environment Setup
 - [ ] Initialize Next.js 14+ (App Router) + TypeScript workspace
-- [ ] Port Homepage Mockup UI components (`mockup/homepage`) into Next.js (`app/page.tsx`)
+- [ ] Port & adapt Homepage Mockup UI (`mockup/homepage/src/App.tsx`) into Next.js (`app/page.tsx`)
 - [ ] Configure `docker-compose.yml` (PostgreSQL + Redis local container services)
 - [ ] Setup Vitest (Unit & Integration TDD framework)
 - [ ] Setup Playwright (E2E testing framework)
@@ -72,6 +72,9 @@ Living document for tracking local development progress across all 7 phases of t
 
 | Date | Milestone / Action | Reference |
 | :--- | :--- | :--- |
-| 2026-07-21 | Initialized repository, created SPEC.md & implementation_plan.md, analyzed homepage mockup. | Commit `031d396` |
+| 2026-07-21 | Initialized repository, created SPEC.md & implementation_plan.md | Commit `031d396` |
+| 2026-07-21 | Dropped & analyzed standalone Homepage Mockup codebase (`mockup/homepage`) | `mockup/homepage` |
 | 2026-07-21 | Connected remote origin `https://github.com/dimsedra/atmos-label.git`. | Remote `main` |
-| 2026-07-21 | Created PROGRESS.md for local non-remote tracking. | `PROGRESS.md` |
+| 2026-07-21 | Created & configured AGENTS.md with 18 active workspace skills. | `AGENTS.md` |
+| 2026-07-21 | Updated PROGRESS.md for local non-remote tracking. | `PROGRESS.md` |
+
