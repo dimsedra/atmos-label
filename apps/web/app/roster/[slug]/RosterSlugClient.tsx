@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Disc, Pause, Play, Sparkles } from 'lucide-react';
-import type { GroupProfile, MemberProfile, WorkItem } from '../../../data/roster';
+import { ArrowLeft, Disc, Pause, Play } from 'lucide-react';
+import type { GroupProfile, MemberProfile } from '../../../data/roster';
 
 interface RosterSlugClientProps {
   member?: MemberProfile;
@@ -76,29 +76,18 @@ export function RosterSlugClient({
                 {member.role}
               </p>
 
+              {/* UNIFIED SINGLE PROFILE SECTION */}
               <div className="mt-8 border-t border-black/20 pt-6">
-                <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-black/45">
-                  Pre-Existing Discipline
+                <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#ff3b26]">
+                  PROFILE & BACKGROUND
                 </span>
-                <p className="mt-1 text-base font-semibold text-black">
-                  {member.preExistingDiscipline}
+                <p className="mt-2 text-[11px] font-semibold uppercase tracking-[.18em] text-black/50">
+                  DISCIPLINE: {member.preExistingDiscipline}
                 </p>
-              </div>
-
-              <div className="mt-8 border-t border-black/20 pt-6">
-                <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-black/45">
-                  Authentic Interior & Bio
-                </span>
-                <p className="mt-3 text-base leading-relaxed text-black/75 md:text-lg">
+                <p className="mt-4 text-base leading-relaxed text-black/80 md:text-lg">
                   {member.bio}
                 </p>
-              </div>
-
-              <div className="mt-8 border-t border-black/20 pt-6">
-                <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-black/45">
-                  Scouting Narrative
-                </span>
-                <p className="mt-2 text-sm leading-relaxed text-black/70 italic">
+                <p className="mt-4 border-l-2 border-black/20 pl-4 text-sm leading-relaxed text-black/65 italic">
                   &ldquo;{member.scoutingStory}&rdquo;
                 </p>
               </div>
