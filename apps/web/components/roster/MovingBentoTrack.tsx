@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import type { MemberProfile } from '../../data/roster';
 
@@ -11,6 +10,7 @@ interface MovingBentoTrackProps {
 }
 
 function shuffleArray<T>(array: T[]): T[] {
+  if (!array || !Array.isArray(array)) return [];
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -20,53 +20,47 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 export function MovingBentoTrack({ initialMembers }: MovingBentoTrackProps) {
-  const [shuffledMembers, setShuffledMembers] = useState<MemberProfile[]>(initialMembers);
+  const [shuffledMembers, setShuffledMembers] = useState<MemberProfile[]>(initialMembers || []);
   const [isPaused, setIsPaused] = useState(false);
 
   // Shuffle members on client mount/refresh
   useEffect(() => {
-    setShuffledMembers(shuffleArray(initialMembers));
+    if (initialMembers && initialMembers.length > 0) {
+      setShuffledMembers(shuffleArray(initialMembers));
+    }
   }, [initialMembers]);
 
-  // Duplicate array for seamless infinite marquee loop
-  const marqueeItems = [...shuffledMembers, ...shuffledMembers];
+  // Duplicate array 3x for seamless infinite marquee loop
+  const marqueeItems = [...shuffledMembers, ...shuffledMembers, ...shuffledMembers];
 
   return (
     <div className="relative mt-8 overflow-hidden py-4">
       {/* Top Track Information */}
       <div className="mb-6 flex items-center justify-between">
         <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-black/45">
-          DYNAMIC INFINITE MARQUEE // RANDOMIZED ON REFRESH ({shuffledMembers.length} MEMBERS)
+          DYNAMIC INFINITE MARQUEE // SHUFFLED ON REFRESH ({shuffledMembers.length} MEMBERS)
         </span>
         <span className="text-[10px] font-semibold uppercase tracking-[.18em] text-[#ff3b26]">
-          {isPaused ? 'PAUSED (HOVERING)' : 'AUTOPLAYING'}
+          {isPaused ? 'PAUSED AT CURRENT POSITION' : 'AUTOPLAYING'}
         </span>
       </div>
 
-      {/* Marquee Track Wrapper */}
+      {/* Marquee Track Wrapper with CSS animation-play-state */}
       <div
-        className="flex w-max overflow-hidden"
+        className="relative flex w-full overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
-        <motion.div
-          className="flex gap-6"
-          animate={{
-            x: isPaused ? undefined : ['0%', '-50%'],
-          }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: 'loop',
-              duration: 35,
-              ease: 'linear',
-            },
+        <div
+          className="flex gap-6 w-max animate-marquee"
+          style={{
+            animationPlayState: isPaused ? 'paused' : 'running',
           }}
         >
           {marqueeItems.map((member, idx) => (
             <div
               key={`${member.id}-${idx}`}
-              className="group relative w-[290px] sm:w-[330px] md:w-[360px] aspect-[3/4] flex-shrink-0 overflow-hidden rounded-2xl bg-black shadow-xl"
+              className="group relative w-[290px] sm:w-[330px] md:w-[360px] aspect-[3/4] flex-shrink-0 overflow-hidden rounded-2xl bg-black shadow-xl transition duration-500 hover:shadow-2xl"
             >
               <Link href={`/roster/${member.slug}`} className="block h-full w-full">
                 {/* Picture Box */}
@@ -115,7 +109,7 @@ export function MovingBentoTrack({ initialMembers }: MovingBentoTrackProps) {
               </Link>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
