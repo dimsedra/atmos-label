@@ -4,55 +4,58 @@
 
 ## 1. Technical Architecture & Engineering Specifications
 
-### 1.1 High-Level Architecture Overview
+### 1.1 High-Level Architecture Overview (Monorepo Workspace)
 
 ```
-[ Client & Frontend ] 
-   └─► Next.js (App Router) + React (TS) + TanStack Query + Zod
-         │
+[ Monorepo Root (pnpm workspaces) ]
+   ├── apps/
+   │    ├── web/               ──► Next.js (App Router) + React (TS) + TanStack Query
+   │    └── studio/            ──► Sanity Studio (Standalone CMS Studio for Content Editors)
+   │
+   └── packages/
+        ├── db/                ──► PostgreSQL + Drizzle ORM (Schemas, DB Client & Migrations)
+        ├── queue/             ──► Redis + BullMQ (Queue Definitions & Background Workers)
+        ├── validators/        ──► Shared Zod Schemas (Type Contracts across Apps & Services)
+        └── config/            ──► Shared TypeScript, ESLint, & Tailwind Configurations
+
 [ Edge / Ingress ] 
    └─► Nginx (SSL Termination & Load Balancing)
-         │
-[ Application Layer ]
-   ├──► Node.js API (Business Logic & Core Services)
-   ├──► Auth0 (Token & Session Validation)
-   └──► Sanity.io (Content CMS - Read-Only via API, Sanity Studio for Editors)
-         │
-[ Data, Storage & Queue Layer ]
-   ├──► PostgreSQL + Drizzle ORM (Primary DB & TypeSafe Migrations)
-   ├──► DigitalOcean Spaces (S3-Compatible Object Storage for Media/Assets)
-   └──► Redis (Caching Layer + BullMQ Backing Store)
-         │
-[ Asynchronous Job Processing ]
-   └──► BullMQ Workers (Payment Processing, Retries, Background Tasks)
+
+[ External Services ]
+   ├── Auth0 (Token & Session Validation)
+   ├── Stripe / Midtrans (Payment Gateways & Webhooks)
+   ├── Sanity.io (Headless CMS Content Cloud)
+   └── DigitalOcean Spaces (S3-Compatible Object Storage)
 ```
 
 ---
 
 ### 1.2 Component Specifications
 
-#### A. Client & Edge Layer
+#### A. Monorepo Workspace Structure (`pnpm workspaces`)
+* **Workspace Engine**: `pnpm` Workspaces for instant package linking, zero-duplication dependencies, and high-performance builds.
+* **`apps/web`**: Next.js App Router application hosting the public site (Roster, Shop, News, About Us) and the internal Auth0-protected Logistics & Fulfillment Portal (`/admin/logistics`).
+* **`apps/studio`**: Standalone Sanity Studio instance for content managers and editors.
+* **`packages/db`**: Isolated Drizzle ORM schemas, database connection pooling, migration scripts, and seeds.
+* **`packages/queue`**: BullMQ background workers and Redis queue definitions.
+* **`packages/validators`**: Shared Zod schemas (User, Order, SKU, Shipping Address, Webhook payloads) acting as the single source of truth for TypeScript types across `apps/` and `packages/`.
+* **`packages/config`**: Centralized TypeScript, ESLint, and Tailwind CSS design tokens.
+
+#### B. Client & Edge Layer
 * **Frontend Framework**: **Next.js (App Router)** with React written in **TypeScript**.
 * **State Management & Data Fetching**: **TanStack Query (React Query)** for client-side API caching, optimistic updates, and smooth data re-fetching.
-* **Validation & Type Contracts**: **Zod** for unified runtime validation across API requests, form inputs, and payment webhook payloads.
+* **Validation & Type Contracts**: **Zod** (via `@atmos/validators`) for unified runtime validation across API requests, form inputs, and payment webhook payloads.
 * **Edge Proxy**: Nginx serving as reverse proxy, SSL/TLS termination, and load balancer.
 
-#### B. Application Layer
-* **Node.js API Service**: Monolithic or modular microservices handling business logic, user operations, and data access layers.
-* **Authentication**: Auth0 for secure JWT verification, identity provider integration, and session management.
-* **Headless Content Management (Sanity.io)**: Explicit single source of truth for **all creative, media, and editorial content** across the platform:
-  * **Roster & Artist Hub**: Artist/group bios, member profiles, film photo galleries, solo project details, and discography metadata.
-  * **Shop Lookbooks & Campaigns**: Product editorial storytelling, campaign visual assets, and lookbooks (while inventory & checkout transactions reside in PostgreSQL).
-  * **Articles & News**: Press releases, long-form editorial essays, release logs, and behind-the-scenes stories.
-  * **About Us & Brand Messaging**: Manifesto text, 3-phase lifecycle statements, and dynamic hero assets.
-  * *The API queries Sanity in read-only mode for client consumption, while content editors publish updates via a standalone Sanity Studio.*
+#### C. Application & Content Layer
+* **Node.js API & Services**: Modular API routes inside `apps/web` handling business logic and data access.
+* **Authentication**: Auth0 for secure JWT verification, identity provider integration, and role-based access control (RBAC).
+* **Headless Content Management (Sanity.io)**: Explicit single source of truth for **all creative, media, and editorial content** across the platform (`apps/studio` & Sanity Cloud API).
 
-#### C. Data, Storage & Queue Layer
-* **Primary Database & ORM**: **PostgreSQL** accessed via **Drizzle ORM** (TypeSafe schema definitions, zero-overhead SQL execution, and declarative code migrations).
+#### D. Data, Storage & Queue Layer
+* **Primary Database & ORM**: **PostgreSQL** accessed via **Drizzle ORM** (`@atmos/db`) for type-safe schema definitions and zero-overhead SQL migrations.
 * **Object Storage**: **DigitalOcean Spaces** (S3-compatible object storage) for hosting static assets, media backups, and generated invoices.
-* **Cache & Message Broker**: Redis serving a dual role:
-  1. Fast in-memory cache for frequently accessed queries (including cached Sanity/PostgreSQL responses).
-  2. Persistent backend storage for **BullMQ** queue infrastructure.
+* **Cache & Message Broker**: **Redis** + **BullMQ** (`@atmos/queue`) for caching and reliable background job processing.
 
 ---
 

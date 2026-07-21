@@ -17,13 +17,15 @@ Living document for tracking local development progress across all 7 phases of t
 
 ## Phase Checklist & Roadmap
 
-### 🟩 Phase 1: Foundation & Local Environment Setup
-- [ ] Initialize Next.js 14+ (App Router) + TypeScript workspace
-- [ ] Port & adapt Homepage Mockup UI (`mockup/homepage/src/App.tsx`) into Next.js (`app/page.tsx`)
-- [ ] Configure `docker-compose.yml` (PostgreSQL + Redis local container services)
-- [ ] Setup Vitest (Unit & Integration TDD framework)
-- [ ] Setup Playwright (E2E testing framework)
-- [ ] Setup Zod validation utilities & environment schema
+### 🟩 Phase 1: Foundation & Monorepo Local Environment Setup
+- [ ] Initialize `pnpm` Monorepo workspace (`pnpm-workspace.yaml`, `apps/`, `packages/`)
+- [ ] Create Next.js 14+ (App Router) app workspace (`apps/web`)
+- [ ] Port & adapt Homepage Mockup UI (`mockup/homepage/src/App.tsx`) into Next.js (`apps/web/app/page.tsx`)
+- [ ] Setup shared packages (`packages/db`, `packages/queue`, `packages/validators`, `packages/config`)
+- [ ] Configure `docker-compose.yml` (PostgreSQL 16 & Redis 7 local container services)
+- [ ] Setup Vitest (Unit & Integration TDD framework across monorepo)
+- [ ] Setup Playwright (E2E testing framework for `apps/web`)
+- [ ] Setup Zod validation utilities & environment schema in `@atmos/validators`
 
 ### ⬜ Phase 2: Core Data & Database Layer (Drizzle ORM + TDD)
 - [ ] Define Drizzle ORM schemas (`schema.ts`: Users, Products/SKUs, Orders, Items, Payments)
