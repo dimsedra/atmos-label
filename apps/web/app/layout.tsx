@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Syne, Plus_Jakarta_Sans, Space_Mono } from 'next/font/google';
+import { CartProvider } from '../context/CartContext';
 import './globals.css';
 
 const syne = Syne({
@@ -48,8 +49,8 @@ export default function RootLayout({
       lang="en"
       className={`${syne.variable} ${jakarta.variable} ${spaceMono.variable}`}
     >
-      <body className="font-sans antialiased bg-[#f4f4f1] text-[#111]">
-        {children}
+      <body className="bg-[#f4f4f1] text-[#111] antialiased">
+        <CartProvider>{children}</CartProvider>
       </body>
     </html>
   );

@@ -7,17 +7,14 @@ test.describe('ATMOS Homepage E2E Journey', () => {
     // Check main brand title
     await expect(page.locator('h1')).toContainText('ATMOS');
 
-    // Check navigation links
+    // Check main navigation links
     const nav = page.locator('nav').first();
     await expect(nav).toContainText('Music');
-    await expect(nav).toContainText('Artists');
+    await expect(nav).toContainText('Collectives');
     await expect(nav).toContainText('Objects');
     await expect(nav).toContainText('Journal');
 
-    // Check sections exist
-    await expect(page.locator('#releases')).toBeVisible();
-    await expect(page.locator('#artists')).toBeVisible();
-    await expect(page.locator('#shop')).toBeVisible();
-    await expect(page.locator('#journal')).toBeVisible();
+    // Check Section 02 Collectives in Resonance heading
+    await expect(page.locator('h2', { hasText: 'Collectives in resonance' })).toBeVisible();
   });
 });

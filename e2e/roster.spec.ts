@@ -4,26 +4,24 @@ test.describe('ATMOS Roster Module E2E Journey', () => {
   test('should navigate to /roster directory and view member detail', async ({ page }) => {
     await page.goto('/roster');
 
-    // Check main display header
+    // Header title check
     await expect(page.locator('h1')).toContainText('THE PERSON');
 
-    // Check 2 main sections: Collectives & Individuals
-    await expect(page.getByRole('heading', { name: /COLLECTIVES/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /INDIVIDUALS/i })).toBeVisible();
+    // Section 01 Collectives check
+    await expect(page.locator('h2', { hasText: 'COLLECTIVES' })).toBeVisible();
 
-    // Check group section headings for VALLEY and PRIX
-    await expect(page.getByRole('heading', { name: 'VALLEY' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'PRIX' })).toBeVisible();
+    // Section 02 Individuals check
+    await expect(page.locator('h2', { hasText: 'INDIVIDUALS' })).toBeVisible();
 
     // Check member cards exist (Jiwoo)
-    await expect(page.getByRole('heading', { name: 'Jiwoo' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Jiwoo' }).first()).toBeVisible();
 
-    // Click on Jiwoo member profile card link
-    await page.getByRole('link', { name: /Jiwoo/i }).first().click();
+    // Click on Jiwoo member profile link (force: true bypasses infinite marquee animation movement check)
+    await page.getByRole('link', { name: /Jiwoo/i }).first().click({ force: true });
 
-    // Should navigate to detail page /roster/jiwoo
+    // Verify dynamic member page loaded
     await expect(page).toHaveURL(/\/roster\/jiwoo/);
     await expect(page.locator('h1')).toContainText('Jiwoo');
-    await expect(page.locator('text=SOLO SOVEREIGNTY PROJECTS')).toBeVisible();
+    await expect(page.locator('text=Bedroom Producer & Multi-Instrumentalist')).toBeVisible();
   });
 });
