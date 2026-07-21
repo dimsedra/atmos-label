@@ -1,8 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root { 
-  font-family: "DM Sans", Arial, sans-serif; 
+  font-family: var(--font-jakarta), var(--font-syne), system-ui, -apple-system, sans-serif; 
   color: #111; 
   background: #f4f4f1; 
   font-synthesis: none; 
@@ -15,6 +14,15 @@ html {
 body { 
   margin: 0; 
   min-width: 320px; 
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-syne), sans-serif;
+}
+
+[class*="tracking-"], .font-mono, code {
+  font-family: var(--font-mono), monospace;
 }
 
 * { 
@@ -44,8 +52,9 @@ button {
 }
 
 .brand-mark { 
+  font-family: var(--font-syne), sans-serif;
   font-size: 1.18rem; 
-  font-weight: 700; 
+  font-weight: 800; 
   letter-spacing: -.07em; 
   line-height: 1; 
 }
@@ -58,14 +67,16 @@ button {
 }
 
 .hero-word { 
+  font-family: var(--font-syne), sans-serif;
   margin-left: -.045em; 
   font-size: clamp(6rem, 19.8vw, 23rem); 
-  font-weight: 600; 
+  font-weight: 700; 
   line-height: .73; 
   letter-spacing: -.09em; 
 }
 
 .arrow-link { 
+  font-family: var(--font-mono), monospace;
   display: inline-flex; 
   width: fit-content; 
   align-items: center; 
