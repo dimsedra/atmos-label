@@ -236,7 +236,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 02: COLLECTIVES IN RESONANCE (ADAPTIVE FULL GRID WITH FUTURE ARRIVAL CARD) */}
+      {/* SECTION 02: COLLECTIVES IN RESONANCE (RAW EDITORIAL BLUEPRINT SPREAD — NO CARDS) */}
       <section id="collectives" className="bg-[#101010] px-5 py-24 text-white md:px-10 md:py-36">
         <SectionHead
           index="02"
@@ -246,97 +246,84 @@ export default function HomePage() {
           dark
         />
 
-        <p className="mt-8 max-w-xl text-base leading-relaxed text-white/70">
-          Groups at ATMOS are not audition slots—they are natural meeting points where formed, distinct individuals come together.
-        </p>
+        <div className="mt-8 max-w-xl">
+          <p className="text-base leading-relaxed text-white/70">
+            Groups at ATMOS are not audition slots—they are natural meeting points where formed, distinct individuals come together.
+          </p>
+        </div>
 
-        {/* Adaptive Grid Layout that looks 100% full & opinionated */}
-        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {/* RAW ARCHITECTURAL EDITORIAL SPREAD */}
+        <div className="mt-16 border-t border-white/20">
           {GROUPS.map((group, i) => (
             <motion.div
               key={group.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.12 }}
               viewport={{ once: true }}
-              className="group relative flex flex-col justify-between rounded-2xl border border-white/20 bg-white/5 p-6 backdrop-blur-sm transition duration-500 hover:border-white/60 hover:bg-white/10"
+              className="group border-b border-white/20 py-12 lg:py-16"
             >
-              <Link href={`/roster/${group.slug}`} className="flex flex-col justify-between h-full">
-                <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-white/10">
-                  <img
-                    src={group.heroImage}
-                    alt={group.name}
-                    className="h-full w-full object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                  />
-                  <span className="absolute top-3 right-3 bg-black/80 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.18em] text-[#e8ff43]">
-                    {group.memberCount} MEMBERS
-                  </span>
-                </div>
+              <Link href={`/roster/${group.slug}`} className="block">
+                <div className="grid gap-8 lg:grid-cols-[1fr_1.3fr] lg:items-center">
+                  {/* Left Column: Typographic Manifest & Meta */}
+                  <div className="flex flex-col justify-between">
+                    <div>
+                      <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[.22em] text-[#e8ff43]">
+                        <span>PATTERN 0{i + 1}</span>
+                        <span>//</span>
+                        <span>{group.memberCount} MEMBERS</span>
+                      </div>
 
-                <div className="mt-6 flex items-center justify-between border-t border-white/20 pt-4">
-                  <div>
-                    <span className="text-[9px] font-semibold uppercase tracking-[.2em] text-[#e8ff43]">
-                      PATTERN 0{i + 1}
-                    </span>
-                    <h3 className="text-3xl font-semibold tracking-[-.05em] md:text-4xl text-white">
-                      {group.name}
-                    </h3>
+                      <h3 className="mt-4 text-[clamp(3.5rem,7vw,7.5rem)] font-semibold leading-[.82] tracking-[-.07em] uppercase transition duration-500 group-hover:text-[#e8ff43]">
+                        {group.name}
+                      </h3>
+
+                      <p className="mt-6 text-base font-medium text-white/85 leading-relaxed md:text-lg">
+                        {group.tagline}
+                      </p>
+                    </div>
+
+                    <div className="mt-10 flex items-center gap-3 text-xs font-semibold uppercase tracking-[.2em] text-[#e8ff43]">
+                      <span>Explore {group.name} Pattern</span>
+                      <ArrowRight
+                        size={18}
+                        className="-rotate-45 transition duration-300 group-hover:rotate-0 group-hover:translate-x-1"
+                      />
+                    </div>
                   </div>
-                  <ArrowRight
-                    className="-rotate-45 transition duration-300 group-hover:rotate-0 group-hover:text-[#e8ff43]"
-                    size={20}
-                  />
-                </div>
 
-                <p className="mt-2 text-xs font-medium text-white/75 line-clamp-2">
-                  {group.tagline}
-                </p>
-
-                <div className="mt-6 flex items-center justify-between text-[10px] font-semibold uppercase tracking-[.18em] text-[#e8ff43]">
-                  <span>Explore Pattern</span>
-                  <span className="text-white/40">SEOUL</span>
+                  {/* Right Column: Full-Bleed Tactile Image */}
+                  <div className="relative aspect-[16/9] overflow-hidden bg-white/5">
+                    <img
+                      src={group.heroImage}
+                      alt={group.name}
+                      className="h-full w-full object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
+                    />
+                  </div>
                 </div>
               </Link>
             </motion.div>
           ))}
 
-          {/* FUTURE ARRIVAL TEASER CARD (Fills 3rd Grid Spot cleanly & expresses label expansion) */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            viewport={{ once: true }}
-            className="group relative flex flex-col justify-between rounded-2xl border border-dashed border-white/20 bg-white/[0.02] p-6 transition duration-500 hover:border-[#e8ff43]/50"
-          >
-            <div>
-              <div className="flex items-center justify-between text-[9px] font-semibold uppercase tracking-[.2em] text-[#e8ff43]">
-                <span>PATTERN 03</span>
-                <span className="flex items-center gap-1 text-white/50">
-                  <Sparkles size={10} /> IN DEVELOPMENT
+          {/* FUTURE ARRIVALS ARCHITECTURAL ROW */}
+          <div className="py-12 lg:py-16 text-white/40">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <span className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#e8ff43]/60">
+                  PATTERNS 03 & 04 // IN DEVELOPMENT
                 </span>
+                <h3 className="mt-2 text-3xl font-semibold tracking-[-.05em] uppercase text-white/50">
+                  FLAVOR & SOUVEREIN
+                </h3>
               </div>
-
-              <div className="mt-6 aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/40 flex items-center justify-center p-6 text-center">
-                <span className="text-xs font-semibold uppercase tracking-[.22em] text-white/40">
-                  FLAVOR & SOUVEREIN // FUTURE RELEASES
-                </span>
-              </div>
-
-              <h3 className="mt-6 text-2xl font-semibold tracking-[-.04em] text-white/80">
-                FUTURE ARRIVALS
-              </h3>
-              <p className="mt-2 text-xs text-white/50 leading-relaxed">
-                New collective patterns emerge as human resonances take form naturally across Seoul studios.
-              </p>
+              <Link
+                href="/roster"
+                className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[.18em] text-[#e8ff43]/70 hover:text-[#e8ff43]"
+              >
+                Label Lifecycle <ArrowRight size={14} />
+              </Link>
             </div>
-
-            <Link
-              href="/roster"
-              className="mt-6 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#e8ff43] transition hover:underline"
-            >
-              View Roster Philosophy <ArrowRight size={14} />
-            </Link>
-          </motion.div>
+          </div>
         </div>
       </section>
 
