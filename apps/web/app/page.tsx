@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowDown, ArrowRight, Menu, Pause, Play, ShoppingBag, X } from 'lucide-react';
+import { ArrowDown, ArrowRight, Menu, Pause, Play, ShoppingBag, Sparkles, X } from 'lucide-react';
 import { GROUPS } from '../data/roster';
 
 const hero = 'https://images.pexels.com/photos/9771506/pexels-photo-9771506.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=2400&q=90';
@@ -236,7 +236,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SECTION 02: COLLECTIVES IN RESONANCE (HORIZONTAL SCALABLE TRACK) */}
+      {/* SECTION 02: COLLECTIVES IN RESONANCE (ADAPTIVE FULL GRID WITH FUTURE ARRIVAL CARD) */}
       <section id="collectives" className="bg-[#101010] px-5 py-24 text-white md:px-10 md:py-36">
         <SectionHead
           index="02"
@@ -250,19 +250,16 @@ export default function HomePage() {
           Groups at ATMOS are not audition slots—they are natural meeting points where formed, distinct individuals come together.
         </p>
 
-        {/* Horizontal Scalable Collective Cards Track */}
-        <div
-          className="mt-12 flex gap-8 overflow-x-auto pb-6 scrollbar-none snap-x snap-mandatory"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
+        {/* Adaptive Grid Layout that looks 100% full & opinionated */}
+        <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {GROUPS.map((group, i) => (
             <motion.div
               key={group.id}
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
               viewport={{ once: true }}
-              className="group relative w-[310px] sm:w-[400px] md:w-[460px] flex-shrink-0 snap-start rounded-2xl border border-white/20 bg-white/5 p-6 backdrop-blur-sm transition duration-500 hover:border-white/50"
+              className="group relative flex flex-col justify-between rounded-2xl border border-white/20 bg-white/5 p-6 backdrop-blur-sm transition duration-500 hover:border-white/60 hover:bg-white/10"
             >
               <Link href={`/roster/${group.slug}`} className="flex flex-col justify-between h-full">
                 <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-white/10">
@@ -302,6 +299,44 @@ export default function HomePage() {
               </Link>
             </motion.div>
           ))}
+
+          {/* FUTURE ARRIVAL TEASER CARD (Fills 3rd Grid Spot cleanly & expresses label expansion) */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            viewport={{ once: true }}
+            className="group relative flex flex-col justify-between rounded-2xl border border-dashed border-white/20 bg-white/[0.02] p-6 transition duration-500 hover:border-[#e8ff43]/50"
+          >
+            <div>
+              <div className="flex items-center justify-between text-[9px] font-semibold uppercase tracking-[.2em] text-[#e8ff43]">
+                <span>PATTERN 03</span>
+                <span className="flex items-center gap-1 text-white/50">
+                  <Sparkles size={10} /> IN DEVELOPMENT
+                </span>
+              </div>
+
+              <div className="mt-6 aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/40 flex items-center justify-center p-6 text-center">
+                <span className="text-xs font-semibold uppercase tracking-[.22em] text-white/40">
+                  FLAVOR & SOUVEREIN // FUTURE RELEASES
+                </span>
+              </div>
+
+              <h3 className="mt-6 text-2xl font-semibold tracking-[-.04em] text-white/80">
+                FUTURE ARRIVALS
+              </h3>
+              <p className="mt-2 text-xs text-white/50 leading-relaxed">
+                New collective patterns emerge as human resonances take form naturally across Seoul studios.
+              </p>
+            </div>
+
+            <Link
+              href="/roster"
+              className="mt-6 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#e8ff43] transition hover:underline"
+            >
+              View Roster Philosophy <ArrowRight size={14} />
+            </Link>
+          </motion.div>
         </div>
       </section>
 
