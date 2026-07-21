@@ -1,112 +1,121 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import type { MemberProfile } from '../../data/roster';
 
 interface MovingBentoTrackProps {
-  members: MemberProfile[];
+  initialMembers: MemberProfile[];
 }
 
-export function MovingBentoTrack({ members }: MovingBentoTrackProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -400 : 400;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
+export function MovingBentoTrack({ initialMembers }: MovingBentoTrackProps) {
+  const [shuffledMembers, setShuffledMembers] = useState<MemberProfile[]>(initialMembers);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Shuffle members on client mount/refresh
+  useEffect(() => {
+    setShuffledMembers(shuffleArray(initialMembers));
+  }, [initialMembers]);
+
+  // Duplicate array for seamless infinite marquee loop
+  const marqueeItems = [...shuffledMembers, ...shuffledMembers];
 
   return (
-    <div className="relative mt-8">
-      {/* Scroll Navigation Controls */}
+    <div className="relative mt-8 overflow-hidden py-4">
+      {/* Top Track Information */}
       <div className="mb-6 flex items-center justify-between">
         <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-black/45">
-          HORIZONTAL SCROLL // SLIDE LEFT & RIGHT ({members.length} MEMBERS)
+          DYNAMIC INFINITE MARQUEE // RANDOMIZED ON REFRESH ({shuffledMembers.length} MEMBERS)
         </span>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => scroll('left')}
-            className="flex size-10 items-center justify-center rounded-full border border-black/20 bg-white/80 transition hover:bg-black hover:text-white"
-            aria-label="Scroll left"
-          >
-            <ArrowLeft size={16} />
-          </button>
-          <button
-            onClick={() => scroll('right')}
-            className="flex size-10 items-center justify-center rounded-full border border-black/20 bg-white/80 transition hover:bg-black hover:text-white"
-            aria-label="Scroll right"
-          >
-            <ArrowRight size={16} />
-          </button>
-        </div>
+        <span className="text-[10px] font-semibold uppercase tracking-[.18em] text-[#ff3b26]">
+          {isPaused ? 'PAUSED (HOVERING)' : 'AUTOPLAYING'}
+        </span>
       </div>
 
-      {/* Horizontal Moving Picture Bento Box Track */}
+      {/* Marquee Track Wrapper */}
       <div
-        ref={scrollRef}
-        className="flex gap-6 overflow-x-auto scroll-smooth pb-6 scrollbar-none snap-x snap-mandatory"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        className="flex w-max overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
       >
-        {members.map((member, idx) => (
-          <motion.div
-            key={member.id}
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.06 }}
-            className="group relative w-[300px] sm:w-[340px] md:w-[380px] aspect-[3/4] flex-shrink-0 snap-start overflow-hidden rounded-2xl bg-black cursor-pointer shadow-lg"
-          >
-            <Link href={`/roster/${member.slug}`} className="block h-full w-full">
-              {/* Picture Box */}
-              <img
-                src={member.image}
-                alt={member.name}
-                className="h-full w-full object-cover grayscale transition duration-700 group-hover:scale-108 group-hover:grayscale-0"
-              />
+        <motion.div
+          className="flex gap-6"
+          animate={{
+            x: isPaused ? undefined : ['0%', '-50%'],
+          }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: 'loop',
+              duration: 35,
+              ease: 'linear',
+            },
+          }}
+        >
+          {marqueeItems.map((member, idx) => (
+            <div
+              key={`${member.id}-${idx}`}
+              className="group relative w-[290px] sm:w-[330px] md:w-[360px] aspect-[3/4] flex-shrink-0 overflow-hidden rounded-2xl bg-black shadow-xl"
+            >
+              <Link href={`/roster/${member.slug}`} className="block h-full w-full">
+                {/* Picture Box */}
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="h-full w-full object-cover grayscale transition duration-700 group-hover:scale-108 group-hover:grayscale-0"
+                />
 
-              {/* Gradient Overlay for bottom text visibility */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 transition duration-500 group-hover:opacity-80" />
+                {/* Gradient Overlay for bottom text visibility */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-90 transition duration-500 group-hover:opacity-80" />
 
-              {/* Top Right Badges */}
-              <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-                <span className="rounded-full bg-black/60 px-3 py-1 text-[9px] font-semibold uppercase tracking-[.2em] text-white backdrop-blur-md">
-                  {member.groupName}
-                </span>
-
-                {member.soloSovereignty.length > 0 && (
-                  <span className="flex items-center gap-1.5 rounded-full bg-[#e8ff43] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.16em] text-black shadow-md">
-                    <Sparkles size={10} /> Solo
+                {/* Top Right Badges */}
+                <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
+                  <span className="rounded-full bg-black/70 px-3 py-1 text-[9px] font-semibold uppercase tracking-[.2em] text-white backdrop-blur-md">
+                    {member.groupName}
                   </span>
-                )}
-              </div>
 
-              {/* Bottom Left Name & Details inside Picture Box */}
-              <div className="absolute bottom-6 left-6 right-6 flex flex-col justify-end text-white">
-                <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#ff3b26]">
-                  {member.archetype}
-                </span>
-                <h3 className="mt-1 text-3xl md:text-4xl font-semibold tracking-[-.05em] leading-none">
-                  {member.name}
-                </h3>
-                <p className="mt-2 text-xs font-medium text-white/80 line-clamp-1">
-                  {member.role}
-                </p>
-                <p className="mt-1 text-[11px] text-white/60 line-clamp-1">
-                  {member.preExistingDiscipline}
-                </p>
-
-                {/* Arrow reveal on hover */}
-                <div className="mt-3 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#e8ff43] opacity-0 transition duration-300 group-hover:opacity-100">
-                  View Profile <ArrowRight size={14} />
+                  {member.soloSovereignty.length > 0 && (
+                    <span className="flex items-center gap-1.5 rounded-full bg-[#e8ff43] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.16em] text-black shadow-md">
+                      <Sparkles size={10} /> Solo
+                    </span>
+                  )}
                 </div>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
+
+                {/* Bottom Left Name & Details inside Picture Box */}
+                <div className="absolute bottom-6 left-6 right-6 flex flex-col justify-end text-white">
+                  <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#ff3b26]">
+                    {member.archetype}
+                  </span>
+                  <h3 className="mt-1 text-3xl md:text-4xl font-semibold tracking-[-.05em] leading-none">
+                    {member.name}
+                  </h3>
+                  <p className="mt-2 text-xs font-medium text-white/85 line-clamp-1">
+                    {member.role}
+                  </p>
+                  <p className="mt-1 text-[11px] text-white/60 line-clamp-1">
+                    {member.preExistingDiscipline}
+                  </p>
+
+                  {/* Arrow reveal on hover */}
+                  <div className="mt-3 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#e8ff43] opacity-0 transition duration-300 group-hover:opacity-100">
+                    View Profile <ArrowRight size={14} />
+                  </div>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </div>
   );

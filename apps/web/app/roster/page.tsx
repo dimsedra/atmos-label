@@ -45,9 +45,9 @@ export default function RosterPage() {
         </div>
       </section>
 
-      {/* SECTION 02: INDIVIDUALS (HORIZONTAL MOVING PICTURE BENTO BOX TRACK) */}
+      {/* SECTION 02: INDIVIDUALS (INFINITE AUTOPLAY BENTO TRACK) */}
       <section className="py-16">
-        <div className="mb-6 flex items-end justify-between border-b border-black/30 pb-4">
+        <div className="mb-4 flex items-end justify-between border-b border-black/30 pb-4">
           <div>
             <span className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#ff3b26]">
               02 // HUMAN ARCHETYPES
@@ -58,8 +58,8 @@ export default function RosterPage() {
           </div>
         </div>
 
-        {/* Horizontal Moving Picture Bento Track */}
-        <MovingBentoTrack members={MEMBERS} />
+        {/* Infinite Autoplay Moving Bento Track with Random Shuffling */}
+        <MovingBentoTrack initialMembers={MEMBERS} />
       </section>
 
       {/* Footer */}
