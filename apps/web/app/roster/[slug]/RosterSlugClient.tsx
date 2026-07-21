@@ -2,16 +2,14 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Pause, Play, Sparkles } from 'lucide-react';
-import type { DiscographyRelease, GroupProfile, MemberProfile } from '../../../data/roster';
-import { DiscographyStream } from '../../../components/roster/DiscographyStream';
+import { ArrowLeft, Disc, Pause, Play, Sparkles } from 'lucide-react';
+import type { GroupProfile, MemberProfile, WorkItem } from '../../../data/roster';
 
 interface RosterSlugClientProps {
   member?: MemberProfile;
   group?: GroupProfile;
   memberGroup?: GroupProfile;
   groupMembers?: MemberProfile[];
-  releases?: DiscographyRelease[];
 }
 
 export function RosterSlugClient({
@@ -19,7 +17,6 @@ export function RosterSlugClient({
   group,
   memberGroup,
   groupMembers,
-  releases = [],
 }: RosterSlugClientProps) {
   const [playingTrack, setPlayingTrack] = useState<string | null>(null);
 
@@ -117,83 +114,96 @@ export function RosterSlugClient({
             </div>
           </div>
 
-          {/* Solo Sovereignty Showcase */}
+          {/* UNIFIED SELECTED WORKS & BODY OF WORK SECTION */}
           <section className="mt-24 border-t border-black/30 pt-16">
-            <div className="flex items-center gap-3">
-              <Sparkles className="text-[#ff3b26]" size={20} />
-              <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#ff3b26]">
-                SOLO SOVEREIGNTY PROJECTS
-              </span>
+            <div className="flex items-center justify-between border-b border-black/30 pb-4">
+              <div>
+                <span className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#ff3b26]">
+                  BODY OF WORK
+                </span>
+                <h2 className="text-[clamp(2.5rem,5vw,5rem)] font-semibold leading-none tracking-[-.06em] uppercase">
+                  SELECTED WORKS ({member.works.length})
+                </h2>
+              </div>
             </div>
-            <h2 className="mt-2 text-[clamp(2.5rem,5vw,5rem)] font-semibold leading-none tracking-[-.06em] uppercase">
-              WORK OUTSIDE THE GROUP
-            </h2>
 
+            {/* Unified Works Stream */}
             <div className="mt-10 grid gap-6 md:grid-cols-2">
-              {member.soloSovereignty.map((project, idx) => (
-                <div
-                  key={idx}
-                  className="border-t border-black/20 bg-white/50 p-6 backdrop-blur-sm"
-                >
-                  <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[.18em]">
-                    <span className="bg-[#e8ff43] px-2.5 py-1 text-black">
-                      {project.type}
-                    </span>
-                    <span className="text-black/50">{project.year}</span>
+              {member.works.map((work) => {
+                const isPlaying = playingTrack === work.title;
+
+                return (
+                  <div
+                    key={work.id}
+                    className="flex flex-col justify-between border-t border-black/20 bg-white/60 p-6 backdrop-blur-sm transition duration-300 hover:bg-white"
+                  >
+                    <div>
+                      {/* Top Discipline Tag & Year */}
+                      <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[.18em]">
+                        <span className="bg-[#e8ff43] px-2.5 py-1 text-black">
+                          {work.discipline}
+                        </span>
+                        <span className="text-black/50">{work.year}</span>
+                      </div>
+
+                      {/* Catalog Number if music release */}
+                      {work.catalogNumber && (
+                        <span className="mt-3 inline-block text-[10px] font-semibold uppercase tracking-[.18em] text-[#ff3b26]">
+                          {work.catalogNumber}
+                        </span>
+                      )}
+
+                      <h3 className="mt-2 text-2xl font-semibold">{work.title}</h3>
+
+                      {work.context && (
+                        <span className="text-[10px] font-semibold uppercase tracking-[.16em] text-black/50">
+                          {work.context}
+                        </span>
+                      )}
+
+                      <p className="mt-3 text-sm leading-relaxed text-black/75">
+                        {work.description}
+                      </p>
+                    </div>
+
+                    {/* Interactive Audio Player if work includes audio track */}
+                    {work.audioTrack && (
+                      <div className="mt-6 flex items-center justify-between border-t border-black/15 pt-4">
+                        <div className="flex items-center gap-2 text-xs">
+                          <Disc size={14} className="text-[#ff3b26]" />
+                          <span className="font-semibold">{work.audioTrack.title}</span>
+                          <span className="text-black/50">({work.audioTrack.duration})</span>
+                        </div>
+
+                        <button
+                          onClick={() => toggleTrack(work.title)}
+                          className={`flex items-center gap-2 rounded-full px-4 py-2 text-[10px] font-semibold uppercase tracking-[.15em] transition ${
+                            isPlaying
+                              ? 'bg-[#ff3b26] text-white'
+                              : 'bg-black text-white hover:bg-black/80'
+                          }`}
+                        >
+                          {isPlaying ? (
+                            <>
+                              <Pause size={12} fill="currentColor" /> Pause
+                            </>
+                          ) : (
+                            <>
+                              <Play size={12} fill="currentColor" /> Preview Audio
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <h3 className="mt-4 text-xl font-semibold">{project.title}</h3>
-                  <p className="mt-2 text-sm text-black/70">
-                    {project.description}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
-          {/* Featured Audio Track Player */}
-          {member.featuredTrack && (
-            <section className="mt-16 rounded-2xl bg-black p-8 text-white">
-              <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#e8ff43]">
-                    FEATURED AUDIO STREAM
-                  </span>
-                  <h3 className="mt-2 text-3xl font-semibold tracking-[-.04em]">
-                    {member.featuredTrack.title}
-                  </h3>
-                  <p className="mt-1 text-xs text-white/60">
-                    Solo Work · {member.name}
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => toggleTrack(member.featuredTrack!.title)}
-                  className="flex items-center gap-3 rounded-full bg-[#ff3b26] px-6 py-3.5 text-xs font-semibold uppercase tracking-[.18em] text-white transition hover:scale-105"
-                >
-                  {playingTrack === member.featuredTrack.title ? (
-                    <>
-                      <Pause fill="currentColor" size={16} /> Pause Track
-                    </>
-                  ) : (
-                    <>
-                      <Play fill="currentColor" size={16} /> Preview Track ({member.featuredTrack.duration})
-                    </>
-                  )}
-                </button>
-              </div>
-            </section>
-          )}
-
-          {/* Discography Stream for Member */}
-          {releases.length > 0 && (
-            <section className="mt-24">
-              <DiscographyStream releases={releases} />
-            </section>
-          )}
-
           {/* Group Resonance Link */}
           {memberGroup && (
-            <div className="mt-20 border-t border-black/20 pt-8">
+            <div className="mt-24 border-t border-black/20 pt-8">
               <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-black/45">
                 GROUP RESONANCE MEETING POINT
               </span>
@@ -284,10 +294,38 @@ export function RosterSlugClient({
             </section>
           )}
 
-          {/* Discography Stream for Collective */}
-          {releases.length > 0 && (
-            <section className="mt-24 border-t border-white/20 pt-12">
-              <DiscographyStream releases={releases} />
+          {/* Unified Group Works Section */}
+          {group.works && group.works.length > 0 && (
+            <section className="mt-24 border-t border-white/20 pt-16">
+              <span className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#e8ff43]">
+                BODY OF WORK
+              </span>
+              <h2 className="mt-2 text-[clamp(2.5rem,5vw,5rem)] font-semibold leading-none tracking-[-.06em] uppercase">
+                COLLECTIVE RELEASES & WORKS ({group.works.length})
+              </h2>
+
+              <div className="mt-10 grid gap-6 md:grid-cols-2">
+                {group.works.map((work) => (
+                  <div
+                    key={work.id}
+                    className="border-t border-white/20 bg-white/10 p-6 backdrop-blur-sm"
+                  >
+                    <div className="flex items-center justify-between text-[10px] font-semibold uppercase tracking-[.18em]">
+                      <span className="bg-[#e8ff43] px-2.5 py-1 text-black">
+                        {work.discipline}
+                      </span>
+                      <span className="text-white/50">{work.year}</span>
+                    </div>
+                    {work.catalogNumber && (
+                      <span className="mt-3 inline-block text-[10px] font-semibold uppercase tracking-[.18em] text-[#e8ff43]">
+                        {work.catalogNumber}
+                      </span>
+                    )}
+                    <h3 className="mt-2 text-2xl font-semibold text-white">{work.title}</h3>
+                    <p className="mt-2 text-sm text-white/70">{work.description}</p>
+                  </div>
+                ))}
+              </div>
             </section>
           )}
         </article>

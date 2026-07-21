@@ -1,9 +1,16 @@
-export interface SoloSovereigntyProject {
+export interface WorkItem {
+  id: string;
   title: string;
-  type: 'Outside Production' | 'Solo Release' | 'Dance Performance' | 'Visual Art';
-  description: string;
+  discipline: string; // e.g. 'Dance Performance', 'Outside Production', 'LP Release', 'Visual Art & Styling', 'Solo Single', 'Analog Sound Design'
   year: string;
-  audioUrl?: string;
+  description: string;
+  context?: string; // e.g. 'VALLEY Collective', 'Solo Sovereignty', 'Outside Collaboration'
+  audioTrack?: {
+    title: string;
+    duration: string;
+  };
+  catalogNumber?: string; // e.g. 'ATM-024 / LP'
+  coverImage?: string;
 }
 
 export interface MemberProfile {
@@ -20,12 +27,7 @@ export interface MemberProfile {
   scoutingStory: string;
   image: string;
   gallery: string[];
-  soloSovereignty: SoloSovereigntyProject[];
-  featuredTrack?: {
-    title: string;
-    duration: string;
-    audioUrl?: string;
-  };
+  works: WorkItem[];
 }
 
 export interface GroupProfile {
@@ -39,6 +41,7 @@ export interface GroupProfile {
   releasePhilosophy: string;
   heroImage: string;
   members: string[]; // Member IDs
+  works: WorkItem[];
 }
 
 export interface DiscographyRelease {
@@ -67,6 +70,30 @@ export const GROUPS: GroupProfile[] = [
     releasePhilosophy: 'Music arrives when the momentum in the room demands it, rejecting mandatory comeback cycles.',
     heroImage: 'https://images.pexels.com/photos/9085380/pexels-photo-9085380.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1600&q=90',
     members: ['member-v1', 'member-v2', 'member-v3', 'member-v4', 'member-v5'],
+    works: [
+      {
+        id: 'work-v-01',
+        title: 'Glasshouse LP',
+        discipline: 'Full Album Release',
+        year: '2026',
+        context: 'VALLEY Collective',
+        catalogNumber: 'ATM-024 / LP',
+        description: 'Debut 8-track studio album recorded live on tape in a glass studio in Bukchon.',
+        coverImage: 'https://images.pexels.com/photos/9085380/pexels-photo-9085380.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1600&q=90',
+        audioTrack: {
+          title: 'Light Leak',
+          duration: '03:48',
+        },
+      },
+      {
+        id: 'work-v-02',
+        title: 'Momentum Live Sessions at DDP',
+        discipline: 'Unscripted Concert Performance',
+        year: '2025',
+        context: 'VALLEY Collective',
+        description: 'Unamplified outdoor live performance captured by observational 16mm camera.',
+      },
+    ],
   },
   {
     id: 'prix',
@@ -79,6 +106,30 @@ export const GROUPS: GroupProfile[] = [
     releasePhilosophy: 'Arrives sideways. Unpredictable in format, unmistakable in origin.',
     heroImage: 'https://images.pexels.com/photos/8005245/pexels-photo-8005245.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1600&q=90',
     members: ['member-p1', 'member-p2', 'member-p3', 'member-p4'],
+    works: [
+      {
+        id: 'work-p-01',
+        title: 'Velvet Orbit EP',
+        discipline: 'EP Release',
+        year: '2026',
+        context: 'PRIX Collective',
+        catalogNumber: 'ATM-025 / EP',
+        description: '5-track glossy electronic pop project celebrating unfiltered presence.',
+        coverImage: 'https://images.pexels.com/photos/8005245/pexels-photo-8005245.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1600&q=90',
+        audioTrack: {
+          title: 'Velvet Orbit',
+          duration: '03:22',
+        },
+      },
+      {
+        id: 'work-p-02',
+        title: 'Sideways Installation & Performance',
+        discipline: 'Multi-disciplinary Exhibition',
+        year: '2025',
+        context: 'PRIX Collective',
+        description: 'Tactile fashion and sound installation staged in an abandoned Seongsu warehouse.',
+      },
+    ],
   },
 ];
 
@@ -100,24 +151,38 @@ export const MEMBERS: MemberProfile[] = [
       'https://images.pexels.com/photos/7778885/pexels-photo-7778885.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
       'https://images.pexels.com/photos/9771506/pexels-photo-9771506.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
+        id: 'w-jw-1',
         title: 'Mapo Tapes Vol. 2',
-        type: 'Solo Release',
-        description: 'Independent 6-track instrumental EP produced under her personal moniker.',
+        discipline: 'Solo Instrumental LP',
         year: '2025',
+        context: 'Solo Work',
+        catalogNumber: 'ATM-012 / LP',
+        description: 'Independent 6-track instrumental cassette produced under her personal moniker.',
+        audioTrack: {
+          title: 'Static & Smoke',
+          duration: '03:42',
+        },
       },
       {
-        title: 'Production for Tokyo Indie Duo',
-        type: 'Outside Production',
-        description: 'Arranged and mixed lead single "Midnight Crossing" for Japanese R&B act.',
+        id: 'w-jw-2',
+        title: 'Glasshouse LP (Guitar & Production)',
+        discipline: 'Full Album Release',
         year: '2026',
+        context: 'VALLEY Collective',
+        catalogNumber: 'ATM-024 / LP',
+        description: 'Lead guitar arrangements and synth production for VALLEY debut LP.',
+      },
+      {
+        id: 'w-jw-3',
+        title: 'Production for Tokyo Indie Duo',
+        discipline: 'Outside Audio Production',
+        year: '2026',
+        context: 'Outside Collaboration',
+        description: 'Arranged and mixed lead single "Midnight Crossing" for Japanese R&B act.',
       },
     ],
-    featuredTrack: {
-      title: 'Static & Smoke',
-      duration: '03:42',
-    },
   },
   {
     id: 'member-v2',
@@ -128,24 +193,34 @@ export const MEMBERS: MemberProfile[] = [
     role: 'Drummer & Percussionist',
     preExistingDiscipline: 'Jazz Fusion & Traditional Percussion',
     archetype: 'Rhythmic Engine',
-    bio: 'Trained in jazz drumming from age nine. Ren brings polyrhythmic momentum and raw kinetic energy to every VALLEY live performance.',
+    bio: 'Trained in jazz drumming from age nine. Ren brings polyrhythmic momentum and raw kinetic energy to every performance.',
     scoutingStory: 'Scouted during a midnight underground jazz session in Hongdae where he was playing solo drum improvisations.',
     image: 'https://images.pexels.com/photos/33635003/pexels-photo-33635003.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     gallery: [
       'https://images.pexels.com/photos/33635003/pexels-photo-33635003.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
-        title: 'International Drum Festival Showcase',
-        type: 'Dance Performance',
-        description: 'Solo percussion performance at Seoul International Rhythm Summit.',
+        id: 'w-rn-1',
+        title: 'Seoul International Rhythm Summit',
+        discipline: 'Percussion Solo Performance',
         year: '2025',
+        context: 'Solo Performance',
+        description: 'Solo polyrhythmic drum improvisation performed live at Seoul Rhythm Summit.',
+      },
+      {
+        id: 'w-rn-2',
+        title: 'Thunderbreak Single',
+        discipline: 'Collective Single',
+        year: '2026',
+        context: 'VALLEY Collective',
+        description: 'Rhythm-driven lead single featuring experimental 7/8 drum patterns.',
+        audioTrack: {
+          title: 'Thunderbreak',
+          duration: '04:15',
+        },
       },
     ],
-    featuredTrack: {
-      title: 'Thunderbreak',
-      duration: '04:15',
-    },
   },
   {
     id: 'member-v3',
@@ -162,18 +237,20 @@ export const MEMBERS: MemberProfile[] = [
     gallery: [
       'https://images.pexels.com/photos/9069676/pexels-photo-9069676.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
+        id: 'w-[#1]',
         title: 'Busan Tides (Acoustic Demos)',
-        type: 'Solo Release',
-        description: 'Self-released acoustic cassette tape celebrating coastal roots.',
+        discipline: 'Solo Acoustic Release',
         year: '2024',
+        context: 'Solo Work',
+        description: 'Self-released cassette tape celebrating coastal roots and acoustic bass.',
+        audioTrack: {
+          title: 'Low Frequency Heart',
+          duration: '03:18',
+        },
       },
     ],
-    featuredTrack: {
-      title: 'Low Frequency Heart',
-      duration: '03:18',
-    },
   },
   {
     id: 'member-v4',
@@ -190,18 +267,28 @@ export const MEMBERS: MemberProfile[] = [
     gallery: [
       'https://images.pexels.com/photos/8221405/pexels-photo-8221405.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
+        id: 'w-k-1',
         title: 'Signal & Grain Zine #04',
-        type: 'Visual Art',
-        description: 'Independent art zine exhibition in Seongsu-dong.',
+        discipline: 'Visual Art & Publication',
         year: '2026',
+        context: 'Solo Work',
+        description: 'Independent art zine exhibition and print run in Seongsu-dong.',
+      },
+      {
+        id: 'w-k-2',
+        title: 'Voltage Shift Sound Design',
+        discipline: 'Analog Sound Design',
+        year: '2026',
+        context: 'VALLEY Collective',
+        audioTrack: {
+          title: 'Voltage Shift',
+          duration: '03:52',
+        },
+        description: 'Custom modular synthesizer patch design for live soundscapes.',
       },
     ],
-    featuredTrack: {
-      title: 'Voltage Shift',
-      duration: '03:52',
-    },
   },
   {
     id: 'member-v5',
@@ -218,18 +305,20 @@ export const MEMBERS: MemberProfile[] = [
     gallery: [
       'https://images.pexels.com/photos/8005245/pexels-photo-8005245.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
+        id: 'w-mh-1',
         title: 'Winter Songs (Live Busking Recording)',
-        type: 'Solo Release',
-        description: 'Live field recording captured on 1/4-inch tape.',
+        discipline: 'Field Recording Album',
         year: '2025',
+        context: 'Solo Work',
+        description: 'Live unamplified street recording captured on 1/4-inch analog tape.',
+        audioTrack: {
+          title: 'Glasshouse',
+          duration: '03:48',
+        },
       },
     ],
-    featuredTrack: {
-      title: 'Glasshouse',
-      duration: '03:48',
-    },
   },
 
   // PRIX Members (4)
@@ -248,18 +337,29 @@ export const MEMBERS: MemberProfile[] = [
     gallery: [
       'https://images.pexels.com/photos/9771506/pexels-photo-9771506.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
+        id: 'w-hn-1',
         title: 'Seoul Biennale Solo Choreography',
-        type: 'Dance Performance',
-        description: 'Solo contemporary dance piece "Unfiltered Coherence" performed at DDP.',
+        discipline: 'Contemporary Dance Performance',
         year: '2025',
+        context: 'Solo Performance',
+        description: 'Solo contemporary dance piece "Unfiltered Coherence" performed live at DDP.',
+      },
+      {
+        id: 'w-hn-2',
+        title: 'Velvet Orbit EP (Performance Direction)',
+        discipline: 'EP Release & Movement',
+        year: '2026',
+        context: 'PRIX Collective',
+        catalogNumber: 'ATM-025 / EP',
+        description: 'Lead performance direction and vocal arrangement for PRIX EP.',
+        audioTrack: {
+          title: 'Velvet Orbit',
+          duration: '03:22',
+        },
       },
     ],
-    featuredTrack: {
-      title: 'Velvet Orbit',
-      duration: '03:22',
-    },
   },
   {
     id: 'member-p2',
@@ -276,24 +376,41 @@ export const MEMBERS: MemberProfile[] = [
     gallery: [
       'https://images.pexels.com/photos/7778885/pexels-photo-7778885.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
-        title: 'Nine Years Later (Solo Single)',
-        type: 'Solo Release',
-        description: 'Breakthrough independent single detailing her personal reclamation.',
+        id: 'w-yn-1',
+        title: 'Nine Years Later',
+        discipline: 'Solo Single Release',
         year: '2025',
+        context: 'Solo Work',
+        catalogNumber: 'ATM-018 / Single',
+        description: 'Breakthrough independent single detailing her personal reclamation.',
+        audioTrack: {
+          title: 'Nine Years Later',
+          duration: '03:45',
+        },
       },
       {
+        id: 'w-yn-2',
         title: 'Co-writing for Global Pop Act',
-        type: 'Outside Production',
-        description: 'Vocal production and top-line song credit on London-based pop release.',
+        discipline: 'Outside Songwriting Credit',
         year: '2026',
+        context: 'Outside Production',
+        description: 'Vocal production and top-line song credit on London-based pop release.',
+      },
+      {
+        id: 'w-yn-3',
+        title: 'No Filter Track',
+        discipline: 'Collective Single',
+        year: '2026',
+        context: 'PRIX Collective',
+        audioTrack: {
+          title: 'No Filter',
+          duration: '03:15',
+        },
+        description: 'Lead single co-written with Rae for PRIX.',
       },
     ],
-    featuredTrack: {
-      title: 'No Filter',
-      duration: '03:15',
-    },
   },
   {
     id: 'member-p3',
@@ -310,18 +427,28 @@ export const MEMBERS: MemberProfile[] = [
     gallery: [
       'https://images.pexels.com/photos/9069676/pexels-photo-9069676.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
+        id: 'w-cl-1',
         title: 'Capsule Styling for Independent Label',
-        type: 'Visual Art',
-        description: 'Creative direction and lookbook styling for Seoul independent fashion label.',
+        discipline: 'Fashion Styling & Creative Direction',
         year: '2026',
+        context: 'Visual Art',
+        description: 'Creative direction and lookbook styling for Seoul independent fashion label.',
+      },
+      {
+        id: 'w-cl-2',
+        title: 'Gloss & Groove Track',
+        discipline: 'Electronic Vocal Performance',
+        year: '2026',
+        context: 'PRIX Collective',
+        audioTrack: {
+          title: 'Gloss & Groove',
+          duration: '03:30',
+        },
+        description: 'Electronic vocal textures for PRIX.',
       },
     ],
-    featuredTrack: {
-      title: 'Gloss & Groove',
-      duration: '03:30',
-    },
   },
   {
     id: 'member-p4',
@@ -338,18 +465,20 @@ export const MEMBERS: MemberProfile[] = [
     gallery: [
       'https://images.pexels.com/photos/8005245/pexels-photo-8005245.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
     ],
-    soloSovereignty: [
+    works: [
       {
+        id: 'w-ra-1',
         title: 'Cipher Tape 01',
-        type: 'Solo Release',
-        description: 'Self-produced underground beat tape.',
+        discipline: 'Underground Beat Tape',
         year: '2025',
+        context: 'Solo Work',
+        description: 'Self-produced underground beat tape recorded on cassette.',
+        audioTrack: {
+          title: 'Sideways Arrival',
+          duration: '03:08',
+        },
       },
     ],
-    featuredTrack: {
-      title: 'Sideways Arrival',
-      duration: '03:08',
-    },
   },
 ];
 
@@ -378,32 +507,6 @@ export const DISCOGRAPHY: DiscographyRelease[] = [
     duration: '18 min',
     coverImage: 'https://images.pexels.com/photos/8005245/pexels-photo-8005245.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1600&q=90',
     featuredTrack: 'No Filter (03:15)',
-    status: 'Released',
-  },
-  {
-    id: 'disc-03',
-    catalogNumber: 'ATM-018 / Single',
-    title: 'Nine Years Later',
-    artist: 'Yuna (PRIX — Solo Sovereignty)',
-    releaseType: 'Single',
-    year: '2025',
-    trackCount: 1,
-    duration: '03:45',
-    coverImage: 'https://images.pexels.com/photos/7778885/pexels-photo-7778885.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
-    featuredTrack: 'Nine Years Later',
-    status: 'Released',
-  },
-  {
-    id: 'disc-04',
-    catalogNumber: 'ATM-012 / LP',
-    title: 'Mapo Tapes Vol. 2',
-    artist: 'Jiwoo (VALLEY — Solo Sovereignty)',
-    releaseType: 'LP',
-    year: '2025',
-    trackCount: 6,
-    duration: '24 min',
-    coverImage: 'https://images.pexels.com/photos/33635003/pexels-photo-33635003.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85',
-    featuredTrack: 'Basement Echoes',
     status: 'Released',
   },
 ];

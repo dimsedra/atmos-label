@@ -11,6 +11,9 @@ interface MemberProfileCardProps {
 }
 
 export function MemberProfileCard({ member, index }: MemberProfileCardProps) {
+  const hasSoloWork = member.works?.some((w) => w.context === 'Solo Work');
+  const featuredWork = member.works?.find((w) => w.audioTrack);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 35 }}
@@ -36,7 +39,7 @@ export function MemberProfileCard({ member, index }: MemberProfileCardProps) {
           </span>
 
           {/* Solo Sovereignty Badge if present */}
-          {member.soloSovereignty.length > 0 && (
+          {hasSoloWork && (
             <span className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-[#e8ff43] px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[.18em] text-black">
               <Sparkles size={10} /> Solo Sovereignty
             </span>
@@ -64,14 +67,14 @@ export function MemberProfileCard({ member, index }: MemberProfileCardProps) {
       </Link>
 
       {/* Featured Track Snippet */}
-      {member.featuredTrack && (
+      {featuredWork?.audioTrack && (
         <div className="mt-4 flex items-center justify-between rounded-lg bg-black/5 p-3 text-xs">
           <div className="flex items-center gap-2">
             <Disc size={14} className="text-[#ff3b26]" />
-            <span className="font-medium">{member.featuredTrack.title}</span>
+            <span className="font-medium">{featuredWork.audioTrack.title}</span>
           </div>
           <span className="tabular-nums text-black/50">
-            {member.featuredTrack.duration}
+            {featuredWork.audioTrack.duration}
           </span>
         </div>
       )}

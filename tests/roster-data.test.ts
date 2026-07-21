@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { GROUPS, MEMBERS, DISCOGRAPHY } from '../apps/web/data/roster';
 
-describe('Roster Data Integrity & Person-First Structure', () => {
+describe('Roster Data Integrity & Unified Works Architecture', () => {
   it('should have 2 active groups: VALLEY (5 members) and PRIX (4 members)', () => {
     const valley = GROUPS.find((g) => g.id === 'valley');
     const prix = GROUPS.find((g) => g.id === 'prix');
@@ -23,19 +23,20 @@ describe('Roster Data Integrity & Person-First Structure', () => {
     expect(prixMembers).toHaveLength(4);
   });
 
-  it('should ensure every member has a valid pre-existing discipline and solo sovereignty project', () => {
+  it('should ensure every member has a valid pre-existing discipline and unified works array', () => {
     MEMBERS.forEach((member) => {
       expect(member.name).toBeTruthy();
       expect(member.preExistingDiscipline).toBeTruthy();
-      expect(member.soloSovereignty.length).toBeGreaterThan(0);
-      expect(member.soloSovereignty[0].title).toBeTruthy();
+      expect(member.works.length).toBeGreaterThan(0);
+      expect(member.works[0].title).toBeTruthy();
+      expect(member.works[0].discipline).toBeTruthy();
     });
   });
 
-  it('should have valid discography catalog entries with catalog numbers', () => {
-    expect(DISCOGRAPHY.length).toBeGreaterThan(0);
-    DISCOGRAPHY.forEach((release) => {
-      expect(release.catalogNumber).toMatch(/^ATM-\d{3} \/ (LP|EP|Single)$/);
-    });
+  it('should support multi-disciplinary work items across music, dance, visual art, and production', () => {
+    const disciplines = MEMBERS.flatMap((m) => m.works.map((w) => w.discipline));
+    expect(disciplines).toContain('Contemporary Dance Performance');
+    expect(disciplines).toContain('Visual Art & Publication');
+    expect(disciplines).toContain('Solo Instrumental LP');
   });
 });

@@ -33,6 +33,8 @@ export function BentoMemberCard({ member, index }: BentoMemberCardProps) {
 
   const isHero = index % 7 === 0;
   const isWide = index % 7 === 3;
+  const hasSoloWork = member.works?.some((w) => w.context === 'Solo Work');
+  const featuredWork = member.works?.find((w) => w.audioTrack);
 
   return (
     <motion.div
@@ -67,7 +69,7 @@ export function BentoMemberCard({ member, index }: BentoMemberCardProps) {
           />
 
           {/* Solo Sovereignty Badge */}
-          {member.soloSovereignty.length > 0 && (
+          {hasSoloWork && (
             <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-md bg-[#e8ff43] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[.16em] text-black shadow-md">
               <Sparkles size={10} /> Solo Sovereignty
             </span>
@@ -95,12 +97,12 @@ export function BentoMemberCard({ member, index }: BentoMemberCardProps) {
           </p>
 
           {/* Featured Audio Track if Hero */}
-          {isHero && member.featuredTrack && (
+          {isHero && featuredWork?.audioTrack && (
             <div className="mt-4 flex items-center gap-2 rounded-lg bg-black/5 p-2.5 text-xs">
               <Disc size={14} className="text-[#ff3b26]" />
-              <span className="font-semibold">{member.featuredTrack.title}</span>
+              <span className="font-semibold">{featuredWork.audioTrack.title}</span>
               <span className="ml-auto text-[10px] text-black/50">
-                {member.featuredTrack.duration}
+                {featuredWork.audioTrack.duration}
               </span>
             </div>
           )}
