@@ -5,14 +5,12 @@ import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowDown, ArrowRight, Menu, Pause, Play, ShoppingBag, Sparkles, X } from 'lucide-react';
 import { GROUPS } from '../data/roster';
+import { PRODUCTS } from '../data/shop';
+import { useCart } from '../context/CartContext';
+import { CartDrawer } from '../components/shop/CartDrawer';
+import { CheckoutModal } from '../components/shop/CheckoutModal';
 
 const hero = 'https://images.pexels.com/photos/9771506/pexels-photo-9771506.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=2400&q=90';
-
-const products = [
-  { name: 'A-01 Headset', price: '$280', image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85' },
-  { name: 'Orbit Ring Set', price: '$140', image: 'https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85' },
-  { name: 'ATMOS Signet', price: '$95', image: 'https://images.pexels.com/photos/2697608/pexels-photo-2697608.jpeg?auto=compress&cs=tinysrgb&fit=crop&w=1000&q=85' },
-];
 
 const articles = [
   { title: 'The architecture of quiet sound', date: 'FEB 2026', tag: 'ESSAY' },
@@ -74,12 +72,15 @@ export default function HomePage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(36);
+  const { addToCart, cartCount, setIsCartOpen } = useCart();
 
   useEffect(() => {
     if (!playing) return;
     const id = window.setInterval(() => setProgress((p) => (p >= 99 ? 0 : p + 0.25)), 120);
     return () => window.clearInterval(id);
   }, [playing]);
+
+  const featuredProducts = PRODUCTS.slice(0, 3);
 
   return (
     <main className="min-h-screen bg-[#f4f4f1] text-[#111]">
@@ -94,16 +95,25 @@ export default function HomePage() {
         >
           <a href="#releases">Music</a>
           <Link href="/roster">Collectives</Link>
-          <a href="#shop">Objects</a>
+          <Link href="/shop">Objects</Link>
           <a href="#journal">Journal</a>
         </nav>
-        <button
-          onClick={() => setMenuOpen(true)}
-          className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[.18em]"
-          aria-label="Open navigation menu"
-        >
-          Menu <Menu size={16} />
-        </button>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[.18em]"
+            aria-label="Open cart"
+          >
+            <ShoppingBag size={15} /> Bag ({cartCount})
+          </button>
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[.18em]"
+            aria-label="Open navigation menu"
+          >
+            Menu <Menu size={16} />
+          </button>
+        </div>
       </header>
 
       <AnimatePresence>
@@ -131,9 +141,9 @@ export default function HomePage() {
               <Link href="/roster" onClick={() => setMenuOpen(false)}>
                 02. Collectives
               </Link>
-              <a href="#shop" onClick={() => setMenuOpen(false)}>
+              <Link href="/shop" onClick={() => setMenuOpen(false)}>
                 03. Objects
-              </a>
+              </Link>
               <a href="#journal" onClick={() => setMenuOpen(false)}>
                 04. Journal
               </a>
@@ -327,16 +337,22 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* SECTION 03: PHYSICAL SIGNALS & OBJECTS (CONNECTED TO REAL SHOP STOREFRONT) */}
       <section id="shop" className="bg-[#e8ff43] px-5 py-24 md:px-10 md:py-36">
-        <SectionHead index="03" title="Physical signals" link="Visit the shop" />
+        <SectionHead
+          index="03"
+          title="Physical signals"
+          link="Visit Full Storefront"
+          linkHref="/shop"
+        />
         <p className="mt-8 max-w-lg text-base leading-relaxed text-black/65">
-          Utility, adornment, and sound. Limited objects designed by ATMOS Studio in Seoul.
+          Utility, adornment, and sound. Limited objects designed by ATMOS Studio in Seoul carrying zero group logos or idol faces.
         </p>
+
         <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-5">
-          {products.map((product, i) => (
-            <motion.a
-              href="#"
-              key={product.name}
+          {featuredProducts.map((product, i) => (
+            <motion.div
+              key={product.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -344,21 +360,35 @@ export default function HomePage() {
               className="group block"
             >
               <div className="relative aspect-square overflow-hidden bg-white">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full object-cover mix-blend-multiply transition duration-700 group-hover:scale-105"
-                />
-                <span className="absolute right-4 top-4 grid size-10 place-items-center rounded-full bg-black text-white opacity-0 transition group-hover:opacity-100">
+                <Link href={`/shop/${product.id}`}>
+                  <img
+                    src={product.primaryImage}
+                    alt={product.name}
+                    className="h-full w-full object-cover mix-blend-multiply transition duration-700 group-hover:scale-105"
+                  />
+                </Link>
+                <button
+                  onClick={() => addToCart(product)}
+                  className="absolute right-4 top-4 grid size-10 place-items-center rounded-full bg-black text-white transition duration-300 hover:bg-[#ff3b26] hover:scale-110"
+                  aria-label={`Add ${product.name} to bag`}
+                >
                   <ShoppingBag size={16} />
-                </span>
+                </button>
               </div>
               <div className="mt-4 flex justify-between border-t border-black/30 pt-3 text-sm font-medium">
-                <span>{product.name}</span>
-                <span>{product.price}</span>
+                <Link href={`/shop/${product.id}`} className="hover:underline">
+                  <span>{product.name}</span>
+                </Link>
+                <span>${product.price} USD</span>
               </div>
-            </motion.a>
+            </motion.div>
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Link href="/shop" className="arrow-link text-black">
+            Explore All Storefront Objects <ArrowRight size={18} />
+          </Link>
         </div>
       </section>
 
@@ -391,6 +421,10 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* Cart Drawer & Simulated Checkout Modal */}
+      <CartDrawer />
+      <CheckoutModal />
 
       <footer className="bg-[#101010] px-5 py-20 text-white md:px-10 md:py-28">
         <div className="grid gap-12 border-b border-white/20 pb-16 lg:grid-cols-[1.5fr_1fr]">
