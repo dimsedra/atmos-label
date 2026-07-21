@@ -6,28 +6,29 @@ Living document for tracking local development progress across all 7 phases of t
 
 ## Overall Status Summary
 
-- **Current Phase**: Phase 1 — Foundation & Local Workspace Setup
+- **Current Phase**: Phase 2 — Core Data & Database Layer (Drizzle ORM + TDD)
 - **TDD Test Suite Status**:
-  - Unit / Integration (Vitest): `0 tests passing`
-  - End-to-End (Playwright): `0 tests passing`
+  - Unit / Integration (Vitest): `2 tests passing`
+  - End-to-End (Playwright): `1 test passing`
 - **GitHub Repository**: [dimsedra/atmos-label](https://github.com/dimsedra/atmos-label.git)
+- **Active Issue**: [Issue #1](https://github.com/dimsedra/atmos-label/issues/1)
 - **Specification Document**: [SPEC.md](file:///d:/Project%20Hub/k-label/SPEC.md)
 
 ---
 
 ## Phase Checklist & Roadmap
 
-### 🟩 Phase 1: Foundation & Monorepo Local Environment Setup
-- [ ] Initialize `pnpm` Monorepo workspace (`pnpm-workspace.yaml`, `apps/`, `packages/`)
-- [ ] Create Next.js 14+ (App Router) app workspace (`apps/web`)
-- [ ] Port & adapt Homepage Mockup UI (`mockup/homepage/src/App.tsx`) into Next.js (`apps/web/app/page.tsx`)
-- [ ] Setup shared packages (`packages/db`, `packages/queue`, `packages/validators`, `packages/config`)
-- [ ] Configure `docker-compose.yml` (PostgreSQL 16 & Redis 7 local container services)
-- [ ] Setup Vitest (Unit & Integration TDD framework across monorepo)
-- [ ] Setup Playwright (E2E testing framework for `apps/web`)
-- [ ] Setup Zod validation utilities & environment schema in `@atmos/validators`
+### ✅ Phase 1: Foundation & Monorepo Local Environment Setup (Completed)
+- [x] Initialize `pnpm` Monorepo workspace (`pnpm-workspace.yaml`, `apps/`, `packages/`)
+- [x] Create Next.js 15+ (App Router) app workspace (`apps/web`)
+- [x] Port & adapt Homepage Mockup UI (`mockup/homepage/src/App.tsx`) into Next.js (`apps/web/app/page.tsx`)
+- [x] Setup shared packages (`packages/db`, `packages/queue`, `packages/validators`, `packages/config`)
+- [x] Configure `docker-compose.yml` (PostgreSQL 16 & Redis 7 local container services)
+- [x] Setup Vitest (Unit & Integration TDD framework across monorepo)
+- [x] Setup Playwright (E2E testing framework for `apps/web`)
+- [x] Setup Zod validation utilities & environment schema in `@atmos/validators`
 
-### ⬜ Phase 2: Core Data & Database Layer (Drizzle ORM + TDD)
+### 🟩 Phase 2: Core Data & Database Layer (Drizzle ORM + TDD)
 - [ ] Define Drizzle ORM schemas (`schema.ts`: Users, Products/SKUs, Orders, Items, Payments)
 - [ ] Setup Drizzle Kit migrations & seed scripts
 - [ ] Write Vitest unit & integration tests for repositories & database queries
@@ -78,5 +79,7 @@ Living document for tracking local development progress across all 7 phases of t
 | 2026-07-21 | Dropped & analyzed standalone Homepage Mockup codebase (`mockup/homepage`) | `mockup/homepage` |
 | 2026-07-21 | Connected remote origin `https://github.com/dimsedra/atmos-label.git`. | Remote `main` |
 | 2026-07-21 | Created & configured AGENTS.md with 18 active workspace skills. | `AGENTS.md` |
-| 2026-07-21 | Updated PROGRESS.md for local non-remote tracking. | `PROGRESS.md` |
+| 2026-07-21 | Created GitHub Issue #1 for Phase 1. | [Issue #1](https://github.com/dimsedra/atmos-label/issues/1) |
+| 2026-07-21 | **Completed Phase 1**: Built pnpm monorepo (`apps/web`, `packages/db`, `packages/queue`, `@atmos/validators`, `@atmos/config`), ported Homepage mockup UI into Next.js 15, configured `docker-compose.yml`, Vitest (2 passing tests), and Playwright E2E (1 passing test). | Phase 1 Completed |
+
 

@@ -1,0 +1,25 @@
+{
+  "name": "atmos-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --recursive run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "db:generate": "pnpm --filter @atmos/db db:generate",
+    "db:migrate": "pnpm --filter @atmos/db db:migrate",
+    "db:studio": "pnpm --filter @atmos/db db:studio",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
