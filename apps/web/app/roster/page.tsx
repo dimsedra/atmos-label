@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { GROUPS, MEMBERS } from '../../data/roster';
 import { RosterHeader } from '../../components/roster/RosterHeader';
 import { GroupProfileCard } from '../../components/roster/GroupProfileCard';
-import { BentoMemberCard } from '../../components/roster/BentoMemberCard';
+import { MovingBentoTrack } from '../../components/roster/MovingBentoTrack';
 
 export default function RosterPage() {
   return (
@@ -45,9 +45,9 @@ export default function RosterPage() {
         </div>
       </section>
 
-      {/* SECTION 02: INDIVIDUALS (MOVING BENTO-BOX GRID) */}
+      {/* SECTION 02: INDIVIDUALS (HORIZONTAL MOVING PICTURE BENTO BOX TRACK) */}
       <section className="py-16">
-        <div className="mb-10 flex items-end justify-between border-b border-black/30 pb-4">
+        <div className="mb-6 flex items-end justify-between border-b border-black/30 pb-4">
           <div>
             <span className="text-[10px] font-semibold uppercase tracking-[.22em] text-[#ff3b26]">
               02 // HUMAN ARCHETYPES
@@ -56,17 +56,10 @@ export default function RosterPage() {
               INDIVIDUALS ({MEMBERS.length})
             </h2>
           </div>
-          <span className="text-[10px] font-semibold uppercase tracking-[.18em] text-black/45">
-            BENTO GRID // INTERACTIVE
-          </span>
         </div>
 
-        {/* Dynamic Bento Box Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-          {MEMBERS.map((member, idx) => (
-            <BentoMemberCard key={member.id} member={member} index={idx} />
-          ))}
-        </div>
+        {/* Horizontal Moving Picture Bento Track */}
+        <MovingBentoTrack members={MEMBERS} />
       </section>
 
       {/* Footer */}
