@@ -6,12 +6,13 @@ Living document for tracking local development progress across all 7 phases of t
 
 ## Overall Status Summary
 
-- **Current Phase**: Phase 2 — Core Data & Database Layer (Drizzle ORM + TDD)
+- **Current Phase**: Phase 2 — Frontend UI Ecosystem & Interactive Mock Data
 - **TDD Test Suite Status**:
   - Unit / Integration (Vitest): `2 tests passing`
   - End-to-End (Playwright): `1 test passing`
+- **Active Branch**: `feat/phase-2-frontend-ui`
 - **GitHub Repository**: [dimsedra/atmos-label](https://github.com/dimsedra/atmos-label.git)
-- **Active Issue**: [Issue #1](https://github.com/dimsedra/atmos-label/issues/1)
+- **Active Issue**: [Issue #6 (Task 2.1)](https://github.com/dimsedra/atmos-label/issues/6)
 - **Specification Document**: [SPEC.md](file:///d:/Project%20Hub/k-label/SPEC.md)
 
 ---
@@ -28,34 +29,30 @@ Living document for tracking local development progress across all 7 phases of t
 - [x] Setup Playwright (E2E testing framework for `apps/web`)
 - [x] Setup Zod validation utilities & environment schema in `@atmos/validators`
 
-### 🟩 Phase 2: Core Data & Database Layer (Drizzle ORM + TDD)
+### 🟩 Phase 2: Frontend UI Ecosystem & Interactive Mock Data (UI-First)
+- [ ] **Task 2.1**: Build Roster Page (`/roster` & `/roster/[slug]`) — Group resonance (VALLEY, PRIX, FLAVOR, SOUVEREIN) & member profiles *(Active: [Issue #6](https://github.com/dimsedra/atmos-label/issues/6))*
+- [ ] **Task 2.2**: Build Shop Page (`/shop` & `/shop/[id]`) — Standalone merch storefront, cart drawer, & checkout form simulation *(Active: [Issue #7](https://github.com/dimsedra/atmos-label/issues/7))*
+- [ ] **Task 2.3**: Build Articles & News Page (`/news` & `/news/[slug]`) — Editorial reading experience & field notes *(Active: [Issue #8](https://github.com/dimsedra/atmos-label/issues/8))*
+- [ ] **Task 2.4**: Build About Us Page (`/about`) — ATMOS MOAT vision, manifesto, and 3-phase lifecycle narrative *(Active: [Issue #9](https://github.com/dimsedra/atmos-label/issues/9))*
+- [ ] **Task 2.5**: Build Internal Admin Logistics Portal (`/admin/logistics`) — Order queue, status transitions, & resi input form simulation *(Active: [Issue #10](https://github.com/dimsedra/atmos-label/issues/10))*
+
+### ⬜ Phase 3: Core Data & Database Layer (Drizzle ORM + PostgreSQL based on Real UI)
 - [ ] Define Drizzle ORM schemas (`schema.ts`: Users, Products/SKUs, Orders, Items, Payments)
 - [ ] Setup Drizzle Kit migrations & seed scripts
 - [ ] Write Vitest unit & integration tests for repositories & database queries
 - [ ] Integrate Redis caching layer for DB reads
 
-### ⬜ Phase 3: Headless Content Layer (Sanity.io Integration)
+### ⬜ Phase 4: Headless Content Layer (Sanity.io Integration for Roster & News)
 - [ ] Define Sanity Studio schemas (Roster/Artists, Articles/News, Lookbooks, About/Manifesto)
 - [ ] Build type-safe Sanity client wrapper with Redis caching
 - [ ] Write Vitest integration tests for CMS content fetching
 
-### ⬜ Phase 4: Asynchronous Payment & Reliability Layer (BullMQ + Webhooks)
+### ⬜ Phase 5: Asynchronous Payment & Reliability Layer (BullMQ + Webhooks)
 - [ ] Setup BullMQ connection & queue definitions backed by Redis
 - [ ] Build Stripe & Midtrans webhook endpoints with Zod payload validation
 - [ ] Implement BullMQ worker for order state updates (`PENDING` ➔ `PAID`)
 - [ ] Implement BullMQ worker for dispatch notifications (`SHIPPED` status update)
 - [ ] Write Vitest integration tests for payment queue ingestion & worker retries
-
-### ⬜ Phase 5: Frontend Application & Internal Admin/Logistics Portal
-- [ ] Build Public Pages (Next.js App Router + TanStack Query):
-  - [ ] Roster Page (`/roster` & `/roster/[slug]`)
-  - [ ] Shop Page (`/shop` & `/shop/[id]`)
-  - [ ] Articles & News Page (`/news` & `/news/[slug]`)
-  - [ ] About Us Page (`/about`)
-- [ ] Build Internal Logistics Portal (`/admin/logistics`):
-  - [ ] Auth0 RBAC protection (`Admin` / `Warehouse` roles)
-  - [ ] Fulfillment queue & order processing
-  - [ ] SKU Inventory management & tracking number (resi) entry
 
 ### ⬜ Phase 6: End-to-End Testing & User Flow Validation (Playwright)
 - [ ] Write E2E test: Roster & artist profile navigation
